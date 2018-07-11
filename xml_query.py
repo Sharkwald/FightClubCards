@@ -1,8 +1,6 @@
-import os
-
 from bs4 import BeautifulSoup
 
-file_path = '.\data\Core.xml'
+file_path = 'C:\\Users\\owen.morgan-jones\\Dropbox\\5th Edition\\XML Files\\Core.xml'
 
 with open(file_path) as file:
     core_data = BeautifulSoup(file, "xml")

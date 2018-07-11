@@ -1,4 +1,5 @@
-from abc import ABC
+import jsonpickle
+
 from enum import Enum
 
 item_types = list([{'key': '$', 'desc': 'Currency'},
@@ -16,13 +17,11 @@ item_types = list([{'key': '$', 'desc': 'Currency'},
                    {'key': 'SC', 'desc': 'Staff'},
                    {'key': 'ST', 'desc': 'Scroll'},
                    {'key': 'W', 'desc': 'Wondrous item'},
-                   {'key': 'WD', 'desc': 'Wand'}
-                  ])
+                   {'key': 'WD', 'desc': 'Wand'}])
 
 
-weapon_properties = list(['ammunition','finesse','heavy','light','loading','range','reach','special','thrown','two-handed','versatile'])
-
-import jsonpickle
+weapon_properties = list(['ammunition', 'finesse', 'heavy', 'light', 'loading', 'range', 'reach' ,'special', 'thrown',
+                          'two-handed', 'versatile'])
 
 class ContentType(Enum):
     SubTitle = 1
@@ -38,11 +37,12 @@ class ContentType(Enum):
 
 class ContentsEntry(object):
     param_sep = " | "
+
     def __str__(self):
         stringified = str(self.content_type).lower()[len("contenttype."):]
         stringified += ContentsEntry.param_sep
         for param in self.params:
-            stringified +=  param
+            stringified += param
             stringified += ContentsEntry.param_sep
         stringified = stringified[:-len(ContentsEntry.param_sep)]
         return stringified
@@ -99,10 +99,9 @@ class RpgCard(object):
 
     def to_json(self):
         self.prep_for_json()
-
         return jsonpickle.encode(self, keys=True)
 
-    def __init__(self, title: str, color: str, icon:str):
+    def __init__(self, title: str, color: str, icon: str):
         super(RpgCard, self).__init__()
         self.count = 1
         self.title = title
@@ -110,4 +109,5 @@ class RpgCard(object):
         self.icon = icon
         self.icon_back = icon
         self.content_entries = list([])
+        self.contents = list([])
         self.tags = list([])
