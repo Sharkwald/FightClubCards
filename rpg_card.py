@@ -55,25 +55,54 @@ class ContentsEntry(object):
 
 class RpgCard(object):
 
+    subtitle_length_limit = 35
+
     def add_subtitle(self, subtitle: str):
-        """Adds a subtitle to the card, always as the first entry in the contents list."""
-        subtitle_entry = ContentsEntry(ContentType.SubTitle, subtitle)
-        self.content_entries.insert(0, subtitle_entry)
+        """Appends a subtitle to the card"""
+        if len(subtitle) <= RpgCard.subtitle_length_limit:
+            self._add_subtitle_entry(subtitle)
+            return
+        else:
+            self._add_multiple_subtitles(subtitle)
 
     def add_property(self, name: str, value: str):
-        """Adds a property to the card, as the last entry in the contents list."""
+        """Appends a property to the card"""
         property_entry = ContentsEntry(ContentType.Property, name, value)
         self.content_entries.append(property_entry)
 
-    def add_text(self, text: str):
-        """Adds a text block to the card, as the last entry in the contents list."""
+    def add_description(self, text: str):
+        """Appends a text block to the card"""
         if text.startswith("Source: "):
             self.add_property("Source", text[len("Source: "):])
             return
         text_entry = ContentsEntry(ContentType.Text, text)
         self.content_entries.append(text_entry)
 
-    def prep_for_json(self):
+    def _add_multiple_subtitles(self, subtitle):
+        subtitle_split = subtitle.split(' ')
+        subtitle = ''
+        subtitle_length = 0
+        split_counter = 0
+        while subtitle_length <= RpgCard.subtitle_length_limit and split_counter < len(subtitle_split):
+            subtitle += subtitle_split[split_counter] + ' '
+            subtitle_length = len(subtitle)
+            next = split_counter + 1
+            if next >= len(subtitle_split):
+                subtitle = subtitle.strip()
+                self._add_subtitle_entry(subtitle)
+            else:
+                next_subtitle_length = len(subtitle + ' ' + subtitle_split[next])
+                if next_subtitle_length > RpgCard.subtitle_length_limit:
+                    subtitle = subtitle.strip()
+                    self._add_subtitle_entry(subtitle)
+                    subtitle = ''
+            split_counter = next
+
+    def _add_subtitle_entry(self, subtitle: str):
+        subtitle_entry = ContentsEntry(ContentType.SubTitle, subtitle)
+        self.content_entries.append(subtitle_entry)
+
+    def _prep_for_json(self):
         ellipsis_character = "…"
         contents = list([])
         character_count = 0
@@ -98,7 +127,7 @@ class RpgCard(object):
         self.contents = contents
 
     def to_json(self):
-        self.prep_for_json()
+        self._prep_for_json()
         return jsonpickle.encode(self, keys=True)
 
     def __init__(self, title: str, color: str, icon: str):

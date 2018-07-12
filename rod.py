@@ -22,10 +22,17 @@ class Rod(object):
 
     def to_rpg_card(self) -> RpgCard:
         card = RpgCard(self.title, Rod.default_color, Rod.default_icon)
-        card.add_subtitle(self.rarity + ", " + self.weight + "lb")
-        for text in self.description:
-            card.add_text(text)
+        self.add_subtitle(card)
+        self.add_descriptions(card)
         return card
+
+    def add_descriptions(self, card):
+        for text in self.description:
+            card.add_description(text)
+
+    def add_subtitle(self, card):
+        subtitle = 'Rod, ' + self.rarity + ', ' + self.weight + 'lb'
+        card.add_subtitle(subtitle)
 
     def __init__(self, title: str, rarity: str, weight: str, description: list):
         super(Rod, self).__init__()
