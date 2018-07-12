@@ -1,3 +1,5 @@
+import re
+
 import jsonpickle
 
 from enum import Enum
@@ -42,7 +44,7 @@ class ContentsEntry(object):
         stringified = str(self.content_type).lower()[len("contenttype."):]
         stringified += ContentsEntry.param_sep
         for param in self.params:
-            stringified += param
+            stringified += str(param)
             stringified += ContentsEntry.param_sep
         stringified = stringified[:-len(ContentsEntry.param_sep)]
         return stringified
@@ -56,6 +58,8 @@ class ContentsEntry(object):
 class RpgCard(object):
 
     subtitle_length_limit = 35
+    source_entry_prefix = "Source: "
+    charges_regex = re.compile('.*has ([\d]+) charges.*')
 
     def add_subtitle(self, subtitle: str):
         """Appends a subtitle to the card"""
@@ -71,12 +75,14 @@ class RpgCard(object):
         self.content_entries.append(property_entry)
 
     def add_description(self, text: str):
-        """Appends a text block to the card"""
-        if text.startswith("Source: "):
-            self.add_property("Source", text[len("Source: "):])
-            return
-        text_entry = ContentsEntry(ContentType.Text, text)
-        self.content_entries.append(text_entry)
+        """Appends a description block to the card"""
+        if self._is_source_entry(text):
+            self._add_source_entry(text)
+        elif self._is_charges_entry(text):
+            self._add_boxes_entry(text)
+        else:
+            text_entry = ContentsEntry(ContentType.Text, text)
+            self.content_entries.append(text_entry)
 
     def _add_multiple_subtitles(self, subtitle):
         subtitle_split = subtitle.split(' ')
@@ -101,6 +107,21 @@ class RpgCard(object):
     def _add_subtitle_entry(self, subtitle: str):
         subtitle_entry = ContentsEntry(ContentType.SubTitle, subtitle)
         self.content_entries.append(subtitle_entry)
+
+    def _is_source_entry(self, text: str):
+        return text.startswith(RpgCard.source_entry_prefix)
+
+    def _add_source_entry(self, text: str):
+        self.add_property("Source", text[len(RpgCard.source_entry_prefix):])
+
+    def _is_charges_entry(self, text: str):
+        return RpgCard.charges_regex.match(text)
+
+    def _add_boxes_entry(self, text: str):
+        charge_match = RpgCard.charges_regex.match(text)
+        charges = charge_match.group(1)
+        self.content_entries.append(ContentsEntry(ContentType.Boxes, charges))
+        self.content_entries.append(ContentsEntry(ContentType.Text, text))
 
     def _prep_for_json(self):
         ellipsis_character = "…"
