@@ -120,14 +120,15 @@ class RpgCard(object):
     def _add_boxes_entry(self, text: str):
         charge_match = RpgCard.charges_regex.match(text)
         charges = charge_match.group(1)
-        self.content_entries.append(ContentsEntry(ContentType.Boxes, charges))
+        size = 1
+        self.content_entries.append(ContentsEntry(ContentType.Boxes, charges, size))
         self.content_entries.append(ContentsEntry(ContentType.Text, text))
 
     def _prep_for_json(self):
         ellipsis_character = "…"
         contents = list([])
         character_count = 0
-        character_limit = 500
+        character_limit = 475
         for content_entry in self.content_entries:
             if content_entry.content_type == ContentType.Text:
                 text = content_entry.params[0]
