@@ -4,22 +4,6 @@ import jsonpickle
 
 from enum import Enum
 
-item_types = list([{'key': '$', 'desc': 'Currency'},
-                   {'key': 'A', 'desc': 'Ammunition'},
-                   {'key': 'G', 'desc': 'General'},
-                   {'key': 'HA', 'desc': 'Heavy armor'},
-                   {'key': 'LA', 'desc': 'Light armor'},
-                   {'key': 'M', 'desc': 'Melee weapon'},
-                   {'key': 'MA', 'desc': 'Medium armor'},
-                   {'key': 'P', 'desc': 'Potion'},
-                   {'key': 'R', 'desc': 'Ranged weapon'},
-                   {'key': 'RD', 'desc': 'Rod'},
-                   {'key': 'RG', 'desc': 'Ring'},
-                   {'key': 'S', 'desc': 'Shield'},
-                   {'key': 'SC', 'desc': 'Staff'},
-                   {'key': 'ST', 'desc': 'Scroll'},
-                   {'key': 'W', 'desc': 'Wondrous item'},
-                   {'key': 'WD', 'desc': 'Wand'}])
 
 
 weapon_properties = list(['ammunition', 'finesse', 'heavy', 'light', 'loading', 'range', 'reach' ,'special', 'thrown',
