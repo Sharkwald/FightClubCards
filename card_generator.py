@@ -3,6 +3,7 @@ from bs4 import BeautifulSoup
 from items.potion import Potion
 from items.ring import Ring
 from items.rod import Rod
+from items.sheild import Shield
 
 input_file_path = 'C:\\Users\\owen.morgan-jones\\Dropbox\\5th Edition\\XML Files\\Core.xml'
 output_file_path = 'C:\\Users\\owen.morgan-jones\\Desktop\\cards.json'
@@ -22,7 +23,7 @@ def _parse_items(cards, core_data):
        {'key': 'R', 'desc': 'Ranged weapon'},
        {'key': 'RD', 'desc': 'Rod', 'ctor': Rod.from_xml},
        {'key': 'RG', 'desc': 'Ring', 'ctor': Ring.from_xml},
-       {'key': 'S', 'desc': 'Shield'},
+       {'key': 'S', 'desc': 'Shield', 'ctor': Shield.from_xml},
        {'key': 'ST', 'desc': 'Staff'},
        {'key': 'SC', 'desc': 'Scroll'},
        {'key': 'W', 'desc': 'Wondrous item'},

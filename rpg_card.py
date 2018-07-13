@@ -53,10 +53,13 @@ class RpgCard(object):
         else:
             self._add_multiple_subtitles(subtitle)
 
-    def add_property(self, name: str, value: str):
+    def add_property(self, name: str, value: str, pos_index: int = 0):
         """Appends a property to the card"""
         property_entry = ContentsEntry(ContentType.Property, name, value)
-        self.content_entries.append(property_entry)
+        if pos_index == 0:
+            self.content_entries.append(property_entry)
+        else:
+            self.content_entries.insert(pos_index, property_entry)
 
     def add_description(self, text: str):
         """Appends a description block to the card"""
