@@ -3,7 +3,8 @@ from bs4 import BeautifulSoup
 from items.potion import Potion
 from items.ring import Ring
 from items.rod import Rod
-from items.sheild import Shield
+from items.scroll import Scroll
+from items.shield import Shield
 
 input_file_path = 'C:\\Users\\owen.morgan-jones\\Dropbox\\5th Edition\\XML Files\\Core.xml'
 output_file_path = 'C:\\Users\\owen.morgan-jones\\Desktop\\cards.json'
@@ -19,13 +20,13 @@ def _parse_items(cards, core_data):
        {'key': 'LA', 'desc': 'Light armor'},
        {'key': 'M', 'desc': 'Melee weapon'},
        {'key': 'MA', 'desc': 'Medium armor'},
-       {'key': 'P', 'desc': 'Potion', "ctor": Potion.from_xml},
+       {'key': 'P', 'desc': 'Potion', 'ctor': Potion.from_xml},
        {'key': 'R', 'desc': 'Ranged weapon'},
        {'key': 'RD', 'desc': 'Rod', 'ctor': Rod.from_xml},
        {'key': 'RG', 'desc': 'Ring', 'ctor': Ring.from_xml},
        {'key': 'S', 'desc': 'Shield', 'ctor': Shield.from_xml},
        {'key': 'ST', 'desc': 'Staff'},
-       {'key': 'SC', 'desc': 'Scroll'},
+       {'key': 'SC', 'desc': 'Scroll', 'ctor': Scroll.from_xml},
        {'key': 'W', 'desc': 'Wondrous item'},
        {'key': 'WD', 'desc': 'Wand'}
     ])

@@ -44,9 +44,9 @@ class Shield(base_item):
 
     def to_rpg_card(self) -> RpgCard:
         card = super().to_rpg_card()
-        card.add_property("AC", self.base_armor, 1)
+        card.add_bonus("AC", self.base_armor)
         if self.bonus_armor != '':
-            card.add_property("Bonus AC", "+" + self.bonus_armor, 2)
+            card.add_bonus("Bonus AC", "+" + self.bonus_armor)
         return card
 
     def __init__(self, title: str, subtitle: str, descriptions: list, base_armor: str, bonus_armor: str):

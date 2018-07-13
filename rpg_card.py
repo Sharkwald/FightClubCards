@@ -61,6 +61,12 @@ class RpgCard(object):
         else:
             self.content_entries.insert(pos_index, property_entry)
 
+    def add_bonus(self, name: str, value: str):
+        """Bonuses are just properties that get inserted into the property
+        list after the subtitle(s) but before anything else"""
+        pos_index = self._deduce_bonus_position()
+        self.add_property(name, value, pos_index)
+
     def add_description(self, text: str):
         """Appends a description block to the card"""
         if self._is_source_entry(text):
@@ -70,6 +76,16 @@ class RpgCard(object):
         else:
             text_entry = ContentsEntry(ContentType.Text, text)
             self.content_entries.append(text_entry)
+
+    def _deduce_bonus_position(self) -> int:
+        bonus_pos_index = 0
+        for entry in self.content_entries:
+            if entry.content_type == ContentType.SubTitle or entry.content_type == ContentType.Property:
+                bonus_pos_index += 1
+            else:
+                break
+        return bonus_pos_index
+
 
     def _add_multiple_subtitles(self, subtitle):
         subtitle_split = subtitle.split(' ')
